@@ -1,0 +1,57 @@
+swagger: '2.0'
+info:
+  title: Drift
+  version: '1'
+  description: |
+    The Drift REST API makes it dead simple to track events and customer information. Send your customer data through this API and Drift can become intelligent. We’ll identify what makes a healthy user and empower you to become context-driven when communicating with customers.
+
+    Drift is a customer communication platform that makes it much easier for you and your team to understand, support, and engage with your customers.
+host: event.api.drift.com
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /identify:
+    post:
+      description: |-
+
+        This method is used to identify users or companies based on their unique id in your company’s tables.
+      produces:
+        - 'host: api.producthunt.com'
+      responses:
+        '200':
+          description: ok
+          schema:
+            type: string
+      parameters:
+        - name: orgId
+          required: true
+          in: body
+          description: The id of your organization in Drift
+          type: number
+        - name: userId
+          required: true
+          in: body
+          description: The unique user ID in your user table for the user
+          type: string, number
+        - name: companyId
+          required: true
+          in: body
+          description: The unique company ID in your company table for the company
+          type: string, number
+        - name: attributes
+          required: false
+          in: body
+          description: |-
+            A dictionary of attributes you know about this user, such as their **email**, **name**, **company**. We strongly suggest that you pass the email attribute.
+            
+            **Note**: the attributes object **must be** a flat object. Nested objects or arrays will not work.
+            
+            See Special Attributes for information on attribute that we treat differently than custom attributes.
+          type: object
+        - name: createdAt
+          required: false
+          in: body
+          description: the unix timestamp in milliseconds that the event was created at. We will fill it in with the time we receive the event if you do not pass it.
+          type: number
