@@ -17,8 +17,6 @@ paths:
       description: |-
 
         This method is used to identify users or companies based on their unique id in your company’s tables.
-      produces:
-        - 'host: api.producthunt.com'
       responses:
         '200':
           description: ok
@@ -49,6 +47,50 @@ paths:
             **Note**: the attributes object **must be** a flat object. Nested objects or arrays will not work.
             
             See Special Attributes for information on attribute that we treat differently than custom attributes.
+          type: object
+        - name: createdAt
+          required: false
+          in: body
+          description: the unix timestamp in milliseconds that the event was created at. We will fill it in with the time we receive the event if you do not pass it.
+          type: number
+  /track:
+    post:
+      description: |-
+
+        This method is what you call to send an event to Drift. All events are named and can have a list of attributes attached. You can send an event to Drift for companies or users by passing either the userId or the companyId.
+      responses:
+        '200':
+          description: ok
+          schema:
+            type: string
+      parameters:
+        - name: orgId
+          required: true
+          in: body
+          description: The id of your organization in Drift
+          type: number
+        - name: userId
+          required: true
+          in: body
+          description: The unique user ID in your user table for the user
+          type: string, number
+        - name: companyId
+          required: true
+          in: body
+          description: The unique company ID in your company table for the company
+          type: string, number
+        - name: event
+          required: true
+          description: |-
+            This is the name of this type of event. You should try to reuse the same events with different properties to describe similar actions such as **Share** or **Link Clicked**
+          type: string
+        - name: attributes
+          required: false
+          in: body
+          description: |-
+            A dictionary of attributes about this type of event, such as **shareType** or **linkUrl**.
+
+            **Note**: the attributes object **must be** a flat object. Nested objects or arrays will not work
           type: object
         - name: createdAt
           required: false
